@@ -1,0 +1,20 @@
+name = "hermes-bot"
+main = "src/index.ts"
+compatibility_date = "2024-01-15"
+workers_dev = true
+
+[[env.production]]
+name = "hermes-bot-prod"
+route = "hermes-bot.workers.dev"
+
+[env.production.env]
+TELEGRAM_TOKEN = "" # Set via: wrangler secret put TELEGRAM_TOKEN
+BOT_SECRET = "" # Set via: wrangler secret put BOT_SECRET
+
+[[durable_objects.bindings]]
+name = "MEMORY_STORE"
+class_name = "MemoryStore"
+script_name = "hermes-bot"
+
+[triggers]
+crons = ["0 */6 * * *"] # Cleanup every 6 hours
